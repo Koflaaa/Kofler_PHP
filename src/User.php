@@ -15,7 +15,7 @@ class User
         private string $nachname,
         private string $adresse,
         private string $email,
-        private string $telefon,
+        private string $telefonnummer,
         private string $rolle
     ) {}
 
@@ -27,7 +27,7 @@ class User
             $row['nachname'],
             $row['adresse'],
             $row['email'],
-            $row['telefon'],
+            $row['telefonnummer'],
             $row['rolle']
         );
     }
@@ -37,7 +37,7 @@ class User
     public function getNachname(): string { return $this->nachname; }
     public function getAdresse(): string  { return $this->adresse; }
     public function getEmail(): string    { return $this->email; }
-    public function getTelefon(): string  { return $this->telefon; }
+    public function getTelefon(): string  { return $this->telefonnummer; }
     public function getRolle(): string    { return $this->rolle; }
 
     public function getVollerName(): string
