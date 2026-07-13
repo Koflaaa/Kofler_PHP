@@ -9,9 +9,9 @@ class Benutzer
     private string $nachname;
     private string $email;
     private string $passwort;
-    private string $addresse;
+    private string $adresse;
     private string $telefonnummer;
-    private bool $ist_admin;
+    private bool $istAdmin;
 
     public function __construct(
         PDO $pdo,
@@ -19,20 +19,20 @@ class Benutzer
         string $nachname = '',
         string $email = '',
         string $passwort = '',
-        ?int $id = null,
-        string $addresse = '',
+        string $adresse = '',
         string $telefonnummer = '',
-        bool $ist_admin = false
+        bool $istAdmin = false,
+        ?int $id = null
     ) {
         $this->pdo = $pdo;
         $this->vorname = $vorname;
         $this->nachname = $nachname;
         $this->email = $email;
         $this->passwort = $passwort;
-        $this->id = $id;
-        $this->addresse = $addresse;
+        $this->adresse = $adresse;
         $this->telefonnummer = $telefonnummer;
-        $this->ist_admin = $ist_admin;
+        $this->istAdmin = $istAdmin;
+        $this->id = $id;
     }
 
     public function speichern(): bool
@@ -42,13 +42,19 @@ class Benutzer
                 vorname,
                 nachname,
                 email,
-                passwort
+                passwort,
+                adresse,
+                telefonnummer,
+                ist_admin
             )
             VALUES (
                 :vorname,
                 :nachname,
                 :email,
-                :passwort
+                :passwort,
+                :adresse,
+                :telefonnummer,
+                :ist_admin
             )
         ';
 
@@ -60,9 +66,13 @@ class Benutzer
         );
 
         $erfolgreich = $stmt->execute([
-            'benutzername' => $this->benutzername,
+            'vorname' => $this->vorname,
+            'nachname' => $this->nachname,
             'email' => $this->email,
-            'passwort' => $passwortHash
+            'passwort' => $passwortHash,
+            'adresse' => $this->adresse,
+            'telefonnummer' => $this->telefonnummer,
+            'ist_admin' => $this->istAdmin ? 1 : 0
         ]);
 
         if ($erfolgreich) {
@@ -75,7 +85,16 @@ class Benutzer
     public function getId(): ?int
     {
         return $this->id;
-        
+    }
+
+    public function getVorname(): string
+    {
+        return $this->vorname;
+    }
+
+    public function getNachname(): string
+    {
+        return $this->nachname;
     }
 
     public function getName(): string
@@ -88,9 +107,9 @@ class Benutzer
         return $this->email;
     }
 
-    public function getAddresse(): string
+    public function getAdresse(): string
     {
-        return $this->addresse;
+        return $this->adresse;
     }
 
     public function getTelefonnummer(): string
@@ -98,8 +117,8 @@ class Benutzer
         return $this->telefonnummer;
     }
 
-    public function isIstAdmin(): bool
+    public function istAdmin(): bool
     {
-        return $this->ist_admin;
+        return $this->istAdmin;
     }
 }
