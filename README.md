@@ -1,83 +1,47 @@
-# MariaDB mit Docker Compose
+# Login- und Benutzerverwaltungs-Komponente (PHP OOP)
 
-## Voraussetzungen
+## Funktionen
+1. **Registrierung** mit Vorname, Nachname, Adresse, E-Mail, Telefon, Passwort
+2. **Login** mit E-Mail + Passwort (Session-basiert)
+3. **Rollen:** `user` und `admin`
+4. **Admin-Bereich:** Administratoren können normale Benutzer löschen
+5. **Passwortverwaltung:** Passwort ändern + "Passwort vergessen" mit Reset-Token (30 Min gültig)
 
-- Docker Desktop oder Docker Engine
-- Docker Compose
-
-## Start
-
-1. Passwörter und Datenbanknamen in `.env` anpassen.
-2. Im Projektordner starten:
-
-```bash
-docker compose up -d
+## Struktur
+```
+src/
+  Database.php              PDO-Verbindung (Singleton)
+  User.php                  Entity-Klasse mit Rollenlogik
+  UserRepository.php        Alle DB-Zugriffe (Prepared Statements)
+  Auth.php                  Registrierung, Login/Logout, Session, Passwort ändern
+  PasswordResetService.php  "Passwort vergessen" per Token
+  UserManager.php           Admin-Funktionen (Benutzer löschen)
+public/
+  register.php, login.php, logout.php, dashboard.php,
+  change_password.php, forgot_password.php, reset_password.php, admin.php
+sql/
+  schema.sql                Datenbank-Schema + Beispiel-Admin
 ```
 
-Status prüfen:
+## Installation
+1. `sql/schema.sql` in MySQL/MariaDB importieren:
+   `mysql -u root -p < sql/schema.sql`
+2. Zugangsdaten in `src/Database.php` anpassen (HOST, USER, PASS)
+3. Webserver auf den Ordner `public/` zeigen lassen, z. B.:
+   `php -S localhost:8000 -t public`
+4. Aufrufen: http://localhost:8000/login.php
 
-```bash
-docker compose ps
-```
+**Beispiel-Admin:** admin@example.com / Admin123!
 
-Logs anzeigen:
+## Sicherheit
+- Passwörter mit `password_hash()` / `password_verify()` (bcrypt)
+- Prepared Statements gegen SQL-Injection
+- `htmlspecialchars()` gegen XSS
+- `session_regenerate_id()` gegen Session-Fixation
+- Reset-Tokens werden nur als SHA-256-Hash gespeichert, sind einmalig verwendbar und 30 Minuten gültig
+- Kein Rückschluss möglich, ob eine E-Mail registriert ist (neutrale Meldung bei "Passwort vergessen")
 
-```bash
-docker compose logs -f mariadb
-```
-
-## Verbindung
-
-| Einstellung | Wert |
-|---|---|
-| Host | `localhost` |
-| Port | Wert aus `MARIADB_PORT`, standardmäßig `3306` |
-| Datenbank | Wert aus `MARIADB_DATABASE` |
-| Benutzer | Wert aus `MARIADB_USER` |
-| Passwort | Wert aus `MARIADB_PASSWORD` |
-
-Für DBeaver den Treiber **MariaDB** auswählen.
-
-Andere Container im selben Docker-Netzwerk verwenden als Hostnamen den Servicenamen `mariadb` und Port `3306`.
-
-## MariaDB-Konsole öffnen
-
-```bash
-docker compose exec mariadb mariadb -u root -p
-```
-
-## Stoppen
-
-```bash
-docker compose down
-```
-
-Die Daten bleiben dabei im Volume `mariadb_data` erhalten.
-
-## Komplett zurücksetzen
-
-Achtung: Der folgende Befehl löscht auch alle Daten:
-
-```bash
-docker compose down -v
-```
-
-Danach werden beim nächsten Start die Dateien aus `init/` erneut ausgeführt.
-
-## Backup
-
-```bash
-mkdir -p backups
-docker compose exec -T mariadb sh -c '
-  mariadb-dump -u root -p"$MARIADB_ROOT_PASSWORD" --all-databases
-' > backups/mariadb-backup.sql
-```
-
-
-## Restore
-
-```bash
-docker compose exec -T mariadb sh -c '
-  mariadb -u root -p"$MARIADB_ROOT_PASSWORD"
-' < backups/mariadb-backup.sql
-```
+## Hinweis (Demo-Modus)
+Da kein Mailserver konfiguriert ist, wird der Reset-Link auf der
+"Passwort vergessen"-Seite direkt angezeigt. In Produktion würde
+er per E-Mail versendet.
