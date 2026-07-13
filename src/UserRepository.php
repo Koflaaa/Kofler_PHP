@@ -95,10 +95,10 @@ class UserRepository
     }
 
     /** @return User[] */
-    public function findAllNormalUsers(): array
+    public function findAll(): array
     {
         $stmt = $this->db->query(
-            "SELECT * FROM benutzer WHERE rolle = 'benutzer' ORDER BY nachname, vorname"
+            'SELECT * FROM benutzer ORDER BY rolle, nachname, vorname'
         );
 
         return array_map(fn (array $row) => User::fromArray($row), $stmt->fetchAll());

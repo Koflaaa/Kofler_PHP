@@ -18,10 +18,10 @@ class UserManager
         $this->repo = new UserRepository();
     }
 
-    /** @return User[] Alle normalen Benutzer */
-    public function listNormalUsers(): array
+    /** @return User[] Alle Benutzer (Admins zuerst) */
+    public function listUsers(): array
     {
-        return $this->repo->findAllNormalUsers();
+        return $this->repo->findAll();
     }
 
     /**

@@ -31,8 +31,13 @@ class Auth
         string $email,
         string $telefon,
         string $passwort,
-        string $passwortWdh
+        string $passwortWdh,
+        string $rolle = User::ROLE_USER
     ): int {
+        if (!in_array($rolle, [User::ROLE_USER, User::ROLE_ADMIN], true)) {
+            throw new InvalidArgumentException('Ungültige Rolle.');
+        }
+
         $vorname  = trim($vorname);
         $nachname = trim($nachname);
         $adresse  = trim($adresse);
@@ -57,7 +62,7 @@ class Auth
 
         $hash = password_hash($passwort, PASSWORD_DEFAULT);
 
-        return $this->repo->create($vorname, $nachname, $adresse, $email, $telefon, $hash);
+        return $this->repo->create($vorname, $nachname, $adresse, $email, $telefon, $hash, $rolle);
     }
 
     /** Meldet einen Benutzer an. Gibt true bei Erfolg zurück. */
