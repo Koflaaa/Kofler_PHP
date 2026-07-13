@@ -1,10 +1,20 @@
 <?php
 
-$pdo = require __DIR__ . '/config/database.php';
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/Benutzer.php';
 
-$stmt = $pdo->query('SELECT * FROM person');
-$personen = $stmt->fetchAll();
+$database = new Database();
+$pdo = $database->connect();
 
-foreach ($personen as $person) {
-    echo htmlspecialchars($person['name']) . '<br>';
+$benutzer = new Benutzer(
+    $pdo,
+    'Max',
+    'Mustermann',
+    'test@example.com',
+    'MeinPasswort123'
+);
+
+if ($benutzer->speichern()) {
+    echo 'Benutzer wurde gespeichert.';
+    echo '<br>ID: ' . $benutzer->getId();
 }
