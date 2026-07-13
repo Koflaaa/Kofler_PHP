@@ -129,11 +129,11 @@ class Auth
         return $user;
     }
 
-    /** Bricht ab, wenn der angemeldete Benutzer kein Administrator ist. */
+    /** Bricht ab, wenn der angemeldete Benutzer kein Administrator/Owner ist. */
     public function requireAdmin(): User
     {
         $user = $this->requireLogin();
-        if (!$user->isAdmin()) {
+        if (!$user->hasAdminRights()) {
             http_response_code(403);
             exit('Zugriff verweigert: Administratorrechte erforderlich.');
         }

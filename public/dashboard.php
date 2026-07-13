@@ -11,7 +11,7 @@ renderHeader('Dashboard');
 ?>
 <nav>
     <a href="change_password.php">Passwort ändern</a>
-    <?php if ($user->isAdmin()): ?><a href="admin.php">Benutzerverwaltung</a><?php endif; ?>
+    <?php if ($user->hasAdminRights()): ?><a href="admin.php">Benutzerverwaltung</a><?php endif; ?>
     <a href="logout.php">Abmelden</a>
 </nav>
 
@@ -21,6 +21,6 @@ renderHeader('Dashboard');
     <tr><th>E-Mail</th><td><?= htmlspecialchars($user->getEmail()) ?></td></tr>
     <tr><th>Adresse</th><td><?= htmlspecialchars($user->getAdresse()) ?></td></tr>
     <tr><th>Telefon</th><td><?= htmlspecialchars($user->getTelefon()) ?></td></tr>
-    <tr><th>Rolle</th><td><?= $user->isAdmin() ? 'Administrator' : 'Benutzer' ?></td></tr>
+    <tr><th>Rolle</th><td><?= $user->getRolleLabel() ?></td></tr>
 </table>
 <?php renderFooter(); ?>

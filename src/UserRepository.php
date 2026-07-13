@@ -78,6 +78,15 @@ class UserRepository
         return (int) $this->db->lastInsertId();
     }
 
+    public function updateRole(int $userId, string $rolle): bool
+    {
+        $stmt = $this->db->prepare(
+            'UPDATE benutzer SET rolle = :rolle WHERE id = :id'
+        );
+
+        return $stmt->execute(['rolle' => $rolle, 'id' => $userId]);
+    }
+
     public function updatePassword(int $userId, string $newHash): bool
     {
         $stmt = $this->db->prepare(

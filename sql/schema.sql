@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS benutzer (
     email           VARCHAR(255)  NOT NULL UNIQUE,
     telefonnummer   VARCHAR(50)   NOT NULL,
     passwort_hash   VARCHAR(255)  NOT NULL,
-    rolle           ENUM('benutzer', 'admin') NOT NULL DEFAULT 'benutzer',
+    rolle           ENUM('benutzer', 'admin', 'owner') NOT NULL DEFAULT 'benutzer',
     erstellt_am     TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     aktualisiert_am TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

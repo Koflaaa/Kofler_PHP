@@ -8,6 +8,7 @@ class User
 {
     public const ROLE_USER  = 'benutzer';
     public const ROLE_ADMIN = 'admin';
+    public const ROLE_OWNER = 'owner';
 
     public function __construct(
         private int $id,
@@ -48,5 +49,25 @@ class User
     public function isAdmin(): bool
     {
         return $this->rolle === self::ROLE_ADMIN;
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->rolle === self::ROLE_OWNER;
+    }
+
+    /** Admin ODER Owner — für Zugriff auf die Benutzerverwaltung. */
+    public function hasAdminRights(): bool
+    {
+        return $this->isAdmin() || $this->isOwner();
+    }
+
+    public function getRolleLabel(): string
+    {
+        return match ($this->rolle) {
+            self::ROLE_OWNER => 'Owner',
+            self::ROLE_ADMIN => 'Administrator',
+            default          => 'Benutzer',
+        };
     }
 }
