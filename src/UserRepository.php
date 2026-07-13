@@ -18,7 +18,7 @@ class UserRepository
 
     public function findByEmail(string $email): ?User
     {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt = $this->db->prepare('SELECT * FROM benutzer WHERE email = :email');
         $stmt->execute(['email' => $email]);
         $row = $stmt->fetch();
 
@@ -27,7 +27,7 @@ class UserRepository
 
     public function findById(int $id): ?User
     {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt = $this->db->prepare('SELECT * FROM benutzer WHERE id = :id');
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
 
@@ -37,7 +37,7 @@ class UserRepository
     /** Liefert den gespeicherten Passwort-Hash zu einer E-Mail. */
     public function getPasswordHash(string $email): ?string
     {
-        $stmt = $this->db->prepare('SELECT password_hash FROM users WHERE email = :email');
+        $stmt = $this->db->prepare('SELECT passwort_hash FROM benutzer WHERE email = :email');
         $stmt->execute(['email' => $email]);
         $hash = $stmt->fetchColumn();
 
@@ -46,7 +46,7 @@ class UserRepository
 
     public function emailExists(string $email): bool
     {
-        $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM benutzer WHERE email = :email');
         $stmt->execute(['email' => $email]);
 
         return (int) $stmt->fetchColumn() > 0;
@@ -62,7 +62,7 @@ class UserRepository
         string $rolle = User::ROLE_USER
     ): int {
         $stmt = $this->db->prepare(
-            'INSERT INTO users (vorname, nachname, adresse, email, telefon, password_hash, rolle)
+            'INSERT INTO benutzer (vorname, nachname, adresse, email, telefonnummer, passwort_hash, rolle)
              VALUES (:vorname, :nachname, :adresse, :email, :telefon, :hash, :rolle)'
         );
         $stmt->execute([
@@ -81,7 +81,7 @@ class UserRepository
     public function updatePassword(int $userId, string $newHash): bool
     {
         $stmt = $this->db->prepare(
-            'UPDATE users SET password_hash = :hash WHERE id = :id'
+            'UPDATE benutzer SET passwort_hash = :hash WHERE id = :id'
         );
 
         return $stmt->execute(['hash' => $newHash, 'id' => $userId]);
@@ -89,7 +89,7 @@ class UserRepository
 
     public function delete(int $userId): bool
     {
-        $stmt = $this->db->prepare('DELETE FROM users WHERE id = :id');
+        $stmt = $this->db->prepare('DELETE FROM benutzer WHERE id = :id');
 
         return $stmt->execute(['id' => $userId]);
     }
@@ -98,7 +98,7 @@ class UserRepository
     public function findAllNormalUsers(): array
     {
         $stmt = $this->db->query(
-            "SELECT * FROM users WHERE rolle = 'user' ORDER BY nachname, vorname"
+            "SELECT * FROM benutzer WHERE rolle = 'benutzer' ORDER BY nachname, vorname"
         );
 
         return array_map(fn (array $row) => User::fromArray($row), $stmt->fetchAll());
