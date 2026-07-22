@@ -9,9 +9,9 @@ final class Database
     private static ?PDO $instance = null;
 
     private const HOST    = 'localhost';
-    private const DBNAME  = 'app_db';
-    private const USER    = 'viuser';
-    private const PASS    = 'root';
+    private const DBNAME  = 'benutzerverwaltung';
+    private const USER    = 'root';
+    private const PASS    = 'change_me_root';
     private const CHARSET = 'utf8mb4';
 
     private function __construct() {}

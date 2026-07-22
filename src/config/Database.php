@@ -2,9 +2,9 @@
 
 $host = '127.0.0.1';
 $port = 3306;
-$dbname = 'app_db';
-$username = 'viuser';
-$password = 'root';
+$dbname = 'benutzerverwaltung';
+$username = 'root';
+$password = 'change_me_root';
 
 try {
     return new PDO(

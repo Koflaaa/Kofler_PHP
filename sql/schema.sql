@@ -1,11 +1,11 @@
-CREATE DATABASE IF NOT EXISTS app_db
+CREATE DATABASE IF NOT EXISTS benutzerverwaltung
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
-USE app_db;
+USE benutzerverwaltung;
 
 CREATE TABLE IF NOT EXISTS benutzer (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
+    id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     vorname         VARCHAR(100)  NOT NULL,
     nachname        VARCHAR(100)  NOT NULL,
     adresse         VARCHAR(255)  NOT NULL,
@@ -30,3 +30,4 @@ CREATE TABLE IF NOT EXISTS passwort_reset_tokens (
 ) ENGINE=InnoDB;
 
 CREATE INDEX idx_passwort_reset_tokens_gueltig_bis ON passwort_reset_tokens(gueltig_bis);
+
