@@ -39,7 +39,7 @@ class PasswordResetService
             ->format('Y-m-d H:i:s');
 
         $stmt = $this->db->prepare(
-            'INSERT INTO password_resets (user_id, token_hash, expires_at)
+            'INSERT INTO passwort_reset_tokens (benutzer_id, token_hash, gueltig_bis)
              VALUES (:uid, :hash, :expires)'
         );
         $stmt->execute([
@@ -55,8 +55,8 @@ class PasswordResetService
     private function validateToken(string $token): ?int
     {
         $stmt = $this->db->prepare(
-            'SELECT user_id FROM password_resets
-             WHERE token_hash = :hash AND used = 0 AND expires_at > NOW()'
+            'SELECT benutzer_id FROM passwort_reset_tokens
+             WHERE token_hash = :hash AND verwendet = 0 AND gueltig_bis > NOW()'
         );
         $stmt->execute(['hash' => hash('sha256', $token)]);
         $userId = $stmt->fetchColumn();
@@ -86,7 +86,7 @@ class PasswordResetService
 
         // Token als verbraucht markieren
         $stmt = $this->db->prepare(
-            'UPDATE password_resets SET used = 1 WHERE token_hash = :hash'
+            'UPDATE passwort_reset_tokens SET verwendet = 1 WHERE token_hash = :hash'
         );
         $stmt->execute(['hash' => hash('sha256', $token)]);
     }

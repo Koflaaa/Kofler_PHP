@@ -46,14 +46,6 @@ UPDATE benutzer SET rolle = 'owner' WHERE email = 'ihre@email.de';
 ```
 Danach lassen sich über `admin.php` weitere Admins ernennen.
 
-## Bekanntes Problem
-`PasswordResetService.php` liest/schreibt aktuell die Tabelle `password_resets`
-(Spalten `user_id`, `token_hash`, `expires_at`, `used`), `sql/schema.sql` legt
-aber `passwort_reset_tokens` (Spalten `benutzer_id`, `token_hash`, `gueltig_bis`,
-`verwendet`) an. Dadurch schlägt "Passwort vergessen" nach einer frischen
-Installation mit einem Datenbankfehler fehl, bis Tabellen-/Spaltennamen auf
-beiden Seiten angeglichen werden.
-
 ## Sicherheit
 - Passwörter mit `password_hash()` / `password_verify()` (bcrypt)
 - Prepared Statements gegen SQL-Injection
