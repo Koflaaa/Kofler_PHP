@@ -25,7 +25,7 @@ public/
   change_password.php, forgot_password.php, reset_password.php,
   admin.php                 Benutzerverwaltung (anlegen, Rollen ändern, löschen)
 sql/
-  schema.sql                Datenbank-Schema (Tabellen `benutzer`, `passwort_reset_tokens`)
+  schema.sql                Datenbank-Schema (Tabellen `benutzer`, `passwort_reset_tokens`) + vorgegebener Owner-Account
 ```
 
 ## Installation
@@ -37,14 +37,13 @@ sql/
    `php -S localhost:8000 -t public`
 4. Aufrufen: http://localhost:8000/login.php
 
-**Ersten Admin/Owner anlegen:** Es gibt keinen vorangelegten Admin-Account mehr. Ein Benutzer
-kann sich nur mit der Rolle `benutzer` registrieren; Admin/Owner-Rechte lassen sich nur von
-einem bestehenden Admin bzw. Owner vergeben. Um den allerersten Zugang zu `admin.php` zu
-bekommen, muss nach der Registrierung einmalig direkt in der Datenbank die Rolle gesetzt werden:
-```sql
-UPDATE benutzer SET rolle = 'owner' WHERE email = 'ihre@email.de';
-```
-Danach lassen sich über `admin.php` weitere Admins ernennen.
+**Vorgegebener Owner-Account:** `sql/schema.sql` legt beim Import automatisch einen
+Owner-Account an, über den sich weitere Admins ernennen lassen (selbst registrieren kann
+man sich nur mit der Rolle `benutzer`):
+- E-Mail: `kofler.admin@owner.com`
+- Passwort: `kofler_admin1`
+
+Das Passwort sollte nach dem ersten Login über "Passwort ändern" ersetzt werden.
 
 ## Sicherheit
 - Passwörter mit `password_hash()` / `password_verify()` (bcrypt)

@@ -31,3 +31,15 @@ CREATE TABLE IF NOT EXISTS passwort_reset_tokens (
 
 CREATE INDEX idx_passwort_reset_tokens_gueltig_bis ON passwort_reset_tokens(gueltig_bis);
 
+-- Fest vorgegebener Owner-Account (Passwort: kofler_admin1)
+INSERT IGNORE INTO benutzer (vorname, nachname, adresse, email, telefonnummer, passwort_hash, rolle)
+VALUES (
+    'Admin',
+    'Kofler',
+    'Europastraße 9a',
+    'kofler.admin@owner.com',
+    '+49 176 0390500',
+    '$2y$10$KNJvJtEU1XuP8lebz121GO5itg/uDsU5lCHpPDbDb8h4Vs7d1GDES',
+    'owner'
+);
+
