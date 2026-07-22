@@ -26,11 +26,16 @@ public/
   admin.php                 Benutzerverwaltung (anlegen, Rollen ändern, löschen)
 sql/
   schema.sql                Datenbank-Schema (Tabellen `benutzer`, `passwort_reset_tokens`) + vorgegebener Owner-Account
+backup.sql                  MariaDB-Dump der bestehenden `benutzerverwaltung`-Datenbank (Schema + Daten)
 ```
 
 ## Installation
-1. `sql/schema.sql` in MySQL/MariaDB importieren:
-   `mysql -u root -p < sql/schema.sql`
+1. Datenbank importieren — zwei Möglichkeiten:
+   - **Leeres Schema** (nur Tabellen + vorgegebener Owner-Account):
+     `mysql -u root -p < sql/schema.sql`
+   - **Bestehender Datenstand** (Schema + alle bisherigen Benutzer, z. B. beim Umzug
+     auf einen anderen Rechner):
+     `mysql -u root -p < backup.sql`
    (alternativ per Docker: `docker compose up -d` startet eine passende MariaDB gemäß `.env`)
 2. Zugangsdaten in `src/Database.php` anpassen (HOST, DBNAME, USER, PASS)
 3. Webserver auf den Ordner `public/` zeigen lassen, z. B.:
@@ -44,6 +49,10 @@ man sich nur mit der Rolle `benutzer`):
 - Passwort: `kofler_admin1`
 
 Das Passwort sollte nach dem ersten Login über "Passwort ändern" ersetzt werden.
+
+**Datenbank aktualisieren:** Um den aktuellen Datenstand für den nächsten Rechner
+zu sichern, `backup.sql` neu erzeugen:
+`mysqldump -u root -p --routines --triggers --add-drop-table --databases benutzerverwaltung > backup.sql`
 
 ## Sicherheit
 - Passwörter mit `password_hash()` / `password_verify()` (bcrypt)
