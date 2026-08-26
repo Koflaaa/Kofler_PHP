@@ -1,3 +1,4 @@
+-- Active: 1787727213083@@127.0.0.1@3306@benutzerverwaltung
 CREATE DATABASE IF NOT EXISTS benutzerverwaltung
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
@@ -39,7 +40,7 @@ VALUES (
     'Europastraße 9a',
     'kofler.admin@owner.com',
     '+49 176 0390500',
-    '$2y$10$KNJvJtEU1XuP8lebz121GO5itg/uDsU5lCHpPDbDb8h4Vs7d1GDES',
+    '$2y$10$KNJvJtEU1XuP8lebz121GO5itg/uDsU5lCHpPDbDb8h4Vs7d1GDES', -- Owner Passwort: kofler_admin1
     'owner'
 );
 

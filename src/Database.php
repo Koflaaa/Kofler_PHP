@@ -11,7 +11,7 @@ final class Database
     private const HOST    = 'localhost';
     private const DBNAME  = 'benutzerverwaltung';
     private const USER    = 'root';
-    private const PASS    = 'change_me_root';
+    private const PASS    = '';
     private const CHARSET = 'utf8mb4';
 
     private function __construct() {}
