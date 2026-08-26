@@ -61,8 +61,3 @@ zu sichern, `backup.sql` neu erzeugen:
 - `session_regenerate_id()` gegen Session-Fixation
 - Reset-Tokens werden nur als SHA-256-Hash gespeichert, sind einmalig verwendbar und 30 Minuten gültig
 - Kein Rückschluss möglich, ob eine E-Mail registriert ist (neutrale Meldung bei "Passwort vergessen")
-
-## Hinweis (Demo-Modus)
-Da kein Mailserver konfiguriert ist, wird der Reset-Link auf der
-"Passwort vergessen"-Seite direkt angezeigt. In Produktion würde
-er per E-Mail versendet.
