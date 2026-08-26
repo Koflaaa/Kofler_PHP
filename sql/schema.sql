@@ -43,5 +43,3 @@ VALUES (
     '$2y$10$KNJvJtEU1XuP8lebz121GO5itg/uDsU5lCHpPDbDb8h4Vs7d1GDES', -- Owner Passwort: kofler_admin1
     'owner'
 );
-
-
