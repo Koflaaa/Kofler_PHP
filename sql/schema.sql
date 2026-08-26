@@ -1,4 +1,4 @@
--- Active: 1787727213083@@127.0.0.1@3306@benutzerverwaltung
+-- Active: 1787728980938@@127.0.0.1@3306
 CREATE DATABASE IF NOT EXISTS benutzerverwaltung
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
