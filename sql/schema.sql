@@ -1,4 +1,4 @@
--- Active: 1787728980938@@127.0.0.1@3306
+-- Active: 1745909384444@@127.0.0.1@3306@benutzerverwaltung
 -- Metadaten der SQL-Erweiterung (VS Code), markiert die aktive DB-Verbindung; kein SQL-Befehl
 CREATE DATABASE IF NOT EXISTS benutzerverwaltung
     -- Legt die Datenbank an, falls sie noch nicht existiert
@@ -49,6 +49,11 @@ CREATE TABLE IF NOT EXISTS passwort_reset_tokens (
     -- Markiert, ob das Token bereits zum Zurücksetzen genutzt wurde (0 = nein, 1 = ja)
     erstellt_am  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     -- Zeitpunkt der Erstellung, wird automatisch gesetzt
+    
+
+    INDEX idx_passwort_reset_tokens_gueltig_bis (gueltig_bis),
+    -- Index auf gueltig_bis, beschleunigt Abfragen/Aufräumen nach Ablaufzeit
+    -- (innerhalb von CREATE TABLE, damit ein erneutes Ausführen keinen "Duplicate key name"-Fehler wirft)
 
     CONSTRAINT fk_passwort_reset_tokens_benutzer
         -- Benannter Fremdschlüssel-Constraint für bessere Lesbarkeit in Fehlermeldungen
@@ -56,9 +61,6 @@ CREATE TABLE IF NOT EXISTS passwort_reset_tokens (
         -- Verknüpft benutzer_id mit benutzer.id; wird der Benutzer gelöscht, werden auch seine Tokens gelöscht
 ) ENGINE=InnoDB;
 -- InnoDB als Speicher-Engine: notwendig, damit der Fremdschlüssel funktioniert
-
-CREATE INDEX idx_passwort_reset_tokens_gueltig_bis ON passwort_reset_tokens(gueltig_bis);
--- Index auf gueltig_bis, beschleunigt Abfragen/Aufräumen nach Ablaufzeit
 
 -- Fest vorgegebener Owner-Account (Passwort: kofler_admin1)
 INSERT IGNORE INTO benutzer (vorname, nachname, adresse, email, telefonnummer, passwort_hash, rolle)
